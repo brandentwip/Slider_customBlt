@@ -239,6 +239,8 @@
                     class="product-slider__media-img"
                     src="{{ media_img_url }}"
                     alt="{{ media_img.alt | default: product.title | escape }}"
+                    width="{{ media_img.width | default: 600 }}"
+                    height="{{ media_img.height | default: 600 }}"
                     loading="lazy"
                     decoding="async"
                     data-product-slider-image
@@ -375,6 +377,9 @@
               {%- endif -%}
 
               <div class="product-slider__actions">
+                {%- liquid
+                  assign product_form_id = 'ProductSlider-ProductForm-' | append: section.id | append: '-' | append: product.id
+                -%}
                 <product-form-component
                   data-section-id="{{ section.id }}"
                   data-product-id="{{ product.id }}"
@@ -391,7 +396,7 @@
                     ref="liveRegion"
                   ></div>
 
-                  {%- form 'product', product, id: 'ProductSlider-ProductForm-' | append: section.id | append: '-' | append: product.id, data-type: 'add-to-cart-form', data-product-slider-add-form: true -%}
+                  {%- form 'product', product, id: product_form_id, class: 'product-slider__form', data-type: 'add-to-cart-form' -%}
                     <input
                       type="hidden"
                       name="id"
@@ -470,7 +475,7 @@
         const form = event.target;
         if (!(form instanceof HTMLFormElement)) return;
 
-        if (!form.hasAttribute('data-product-slider-add-form')) return;
+        if (!form.classList.contains('product-slider__form')) return;
 
         const cartDrawer = document.querySelector('cart-drawer-component');
         if (!cartDrawer) return;
@@ -764,4 +769,3 @@
   ]
 }
 {% endschema %}
-
