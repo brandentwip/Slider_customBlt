@@ -102,48 +102,18 @@
     user-select: none;
   }
 
-  .product-slider .product-slider__feature-dropdown {
+  .product-slider .product-slider__feature-overlay {
     position: absolute;
     top: 10px;
     right: 10px;
     z-index: 2;
     max-width: min(78%, 230px);
     color: var(--color-foreground);
-  }
-
-  .product-slider .product-slider__feature-summary {
-    list-style: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 32px;
-    padding: 7px 10px;
-    border-radius: 999px;
-    background: rgb(var(--color-background-rgb) / 0.88);
-    box-shadow: 0 4px 18px rgb(var(--color-foreground-rgb) / 0.14);
-    backdrop-filter: blur(10px);
-    font-size: 0.78rem;
-    font-weight: var(--font-weight-semibold, 600);
-    line-height: 1;
-  }
-
-  .product-slider .product-slider__feature-summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .product-slider .product-slider__feature-summary::after {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    transform: translateY(-2px) rotate(45deg);
-    transition: transform 160ms ease;
-  }
-
-  .product-slider .product-slider__feature-dropdown[open] .product-slider__feature-summary::after {
-    transform: translateY(2px) rotate(225deg);
+    padding: 8px 10px;
+    border-radius: calc(var(--slider-card-radius) - 6px);
+    background: rgb(var(--color-background-rgb) / 0.9);
+    box-shadow: 0 8px 24px rgb(var(--color-foreground-rgb) / 0.16);
+    backdrop-filter: blur(12px);
   }
 
   .product-slider .product-slider__content {
@@ -182,16 +152,12 @@
   }
 
   .product-slider .product-slider__features {
-    margin: 6px 0 0;
-    padding: 9px 10px;
+    margin: 0;
+    padding: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    border-radius: calc(var(--slider-card-radius) - 6px);
-    background: rgb(var(--color-background-rgb) / 0.92);
-    box-shadow: 0 8px 24px rgb(var(--color-foreground-rgb) / 0.16);
-    backdrop-filter: blur(12px);
+    gap: 5px;
   }
 
   .product-slider .product-slider__feature {
@@ -236,16 +202,11 @@
       bottom: 8px;
     }
 
-    .product-slider .product-slider__feature-dropdown {
+    .product-slider .product-slider__feature-overlay {
       top: 8px;
       right: 8px;
       max-width: calc(100% - 16px);
-    }
-
-    .product-slider .product-slider__feature-summary {
-      min-height: 30px;
       padding: 7px 9px;
-      font-size: 0.72rem;
     }
   }
 {%- endstyle -%}
@@ -402,8 +363,7 @@
               {%- endif -%}
 
               {%- if raw_features != blank -%}
-                <details class="product-slider__feature-dropdown">
-                  <summary class="product-slider__feature-summary">Features</summary>
+                <div class="product-slider__feature-overlay">
                   <ul class="product-slider__features" aria-label="Top features">
                     {%- assign features_rendered = 0 -%}
                     {%- for feature in features_lines -%}
@@ -422,7 +382,7 @@
                       {%- endif -%}
                     {%- endfor -%}
                   </ul>
-                </details>
+                </div>
               {%- endif -%}
             </div>
 
