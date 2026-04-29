@@ -102,6 +102,50 @@
     user-select: none;
   }
 
+  .product-slider .product-slider__feature-dropdown {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    max-width: min(78%, 230px);
+    color: var(--color-foreground);
+  }
+
+  .product-slider .product-slider__feature-summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgb(var(--color-background-rgb) / 0.88);
+    box-shadow: 0 4px 18px rgb(var(--color-foreground-rgb) / 0.14);
+    backdrop-filter: blur(10px);
+    font-size: 0.78rem;
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1;
+  }
+
+  .product-slider .product-slider__feature-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-slider .product-slider__feature-summary::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 160ms ease;
+  }
+
+  .product-slider .product-slider__feature-dropdown[open] .product-slider__feature-summary::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+
   .product-slider .product-slider__content {
     display: flex;
     flex-direction: column;
@@ -138,21 +182,36 @@
   }
 
   .product-slider .product-slider__features {
-    margin: 0;
-    padding: 0;
+    margin: 6px 0 0;
+    padding: 9px 10px;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
+    border-radius: calc(var(--slider-card-radius) - 6px);
+    background: rgb(var(--color-background-rgb) / 0.92);
+    box-shadow: 0 8px 24px rgb(var(--color-foreground-rgb) / 0.16);
+    backdrop-filter: blur(12px);
   }
 
   .product-slider .product-slider__feature {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1.25;
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-70, 0.7));
+    color: rgb(var(--color-foreground-rgb) / 0.78);
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+  }
+
+  .product-slider .product-slider__feature::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-right: 7px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: 0.1em;
   }
 
   .product-slider .product-slider__actions {
@@ -175,6 +234,18 @@
     .product-slider .product-slider__swatches {
       left: 8px;
       bottom: 8px;
+    }
+
+    .product-slider .product-slider__feature-dropdown {
+      top: 8px;
+      right: 8px;
+      max-width: calc(100% - 16px);
+    }
+
+    .product-slider .product-slider__feature-summary {
+      min-height: 30px;
+      padding: 7px 9px;
+      font-size: 0.72rem;
     }
   }
 {%- endstyle -%}
@@ -329,6 +400,30 @@
                   {%- endif -%}
                 </div>
               {%- endif -%}
+
+              {%- if raw_features != blank -%}
+                <details class="product-slider__feature-dropdown">
+                  <summary class="product-slider__feature-summary">Features</summary>
+                  <ul class="product-slider__features" aria-label="Top features">
+                    {%- assign features_rendered = 0 -%}
+                    {%- for feature in features_lines -%}
+                      {%- liquid
+                        assign line = feature | strip
+                        if line == blank
+                          continue
+                        endif
+                        assign features_rendered = features_rendered | plus: 1
+                      -%}
+                      {%- if features_rendered <= features_max -%}
+                        <li class="product-slider__feature">{{ line }}</li>
+                      {%- endif -%}
+                      {%- if features_rendered >= features_max -%}
+                        {% break %}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- endif -%}
             </div>
 
             <div class="product-slider__content">
@@ -354,27 +449,6 @@
                 {%- endif -%}
                 <span data-product-slider-price-regular>{{ price_now }}</span>
               </div>
-
-              {%- if features_lines != blank -%}
-                <ul class="product-slider__features" aria-label="Top features">
-                  {%- assign features_rendered = 0 -%}
-                  {%- for feature in features_lines -%}
-                    {%- liquid
-                      assign line = feature | strip
-                      if line == blank
-                        continue
-                      endif
-                      assign features_rendered = features_rendered | plus: 1
-                    -%}
-                    {%- if features_rendered <= features_max -%}
-                      <li class="product-slider__feature">{{ line }}</li>
-                    {%- endif -%}
-                    {%- if features_rendered >= features_max -%}
-                      {% break %}
-                    {%- endif -%}
-                  {%- endfor -%}
-                </ul>
-              {%- endif -%}
 
               <div class="product-slider__actions">
                 {%- liquid
