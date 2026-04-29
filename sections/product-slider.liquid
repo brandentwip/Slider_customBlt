@@ -57,9 +57,9 @@
     gap: 6px;
     padding: 6px 8px;
     border-radius: 999px;
-    background: rgb(var(--color-foreground-rgb) / 0.08);
+    background: rgb(255 255 255 / 79%);
     backdrop-filter: blur(10px);
-  }
+}
 
   .product-slider .product-slider__swatch-btn {
     appearance: none;
@@ -515,6 +515,7 @@
         if (!cartDrawer) return;
 
         cartDrawer.setAttribute('auto-open', '');
+        cartDrawer.open?.();
         // Keep attribute just long enough for the cart-drawer handler to run.
         window.setTimeout(() => cartDrawer.removeAttribute('auto-open'), 5000);
       },
