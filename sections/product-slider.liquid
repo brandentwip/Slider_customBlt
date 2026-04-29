@@ -515,6 +515,7 @@
         if (!cartDrawer) return;
 
         cartDrawer.setAttribute('auto-open', '');
+        cartDrawer.open?.();
         // Keep attribute just long enough for the cart-drawer handler to run.
         window.setTimeout(() => cartDrawer.removeAttribute('auto-open'), 5000);
       },
