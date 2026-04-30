@@ -211,12 +211,6 @@
   }
 {%- endstyle -%}
 
-{% liquid
-  # Build the slides content: one rendered product card per product.
-  # We keep the card HTML custom so we can place the price, metafield features,
-  # and swatch overlay exactly where you want them.
-%}
-
 {% capture list_items %}
   {% if collection != blank and shop.products_count != 0 %}
     {% paginate collection.products by max_products %}
